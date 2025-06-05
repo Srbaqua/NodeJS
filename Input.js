@@ -10,7 +10,8 @@ const server = http.createServer((req,res)=>{
         res.write('<h1> Hey buddy you reached Main page! </h1><br>');
         res.write('<h2>Welcome to our server</h2><br><br>');
         res.write('<a href = "/about"> ABOUT PAGE</a><br><br>');
-        res.write('<a href = "/"> HOME PAGE</a><br>');
+        res.write('<a href = "/"> HOME PAGE</a><br><br>');
+        res.write('<a href = "/profile"> PROFILE PAGE</a><br>');
         res.write('</html>');
         res.end();
         return;
@@ -42,6 +43,15 @@ const server = http.createServer((req,res)=>{
         res.end();
         return;
     }
+    else if(req.url === '/profile'){
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write('<h1> This is Profile Page </h1>');
+        res.write('<h2> Enter Your Details Here.... </h2>');
+        res.write('<form action="/" method="POST">');
+        res.write('<input type = "text" id = "name" name = "name" placeholder = "Enter your name"> <br> <br>');
+        res.end();
+        return;
+    }
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write('<html>');
     res.write('<body> OOPs You reached at wrong server! </body>');
@@ -52,5 +62,5 @@ const server = http.createServer((req,res)=>{
 )
 
 server.listen(PORT,()=>{
-console.log(`Server is running on port ${PORT}`);
+console.log(`Server is running on port http://localhost:${PORT}`);
 });
