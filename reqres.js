@@ -1,9 +1,6 @@
 const fs = require('fs');
-const http = require('http');
 
-const PORT = 3000;
-
-const server = http.createServer((req,res)=>{
+const userDetails = ((req,res)=>{
     if(req.url === '/'){
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.write('<html>');
@@ -32,6 +29,28 @@ const server = http.createServer((req,res)=>{
         res.end();
         return ;
     }else if(req.url.toLowerCase() === "/details" && req.method ==='POST'){
+
+        req.on('data',chunk=>{
+            console.log('Received data chunk:', chunk.toString());
+            body.push(chunk);
+        })
+
+        const body = [];
+        req.on('end', ()=>{
+            const valComing = Buffer.concat(body).toString();
+            console.log('Received body:', valComing);
+
+            const params = new URLSearchParams(valComing);
+            // const bodyObj = {};
+            // for(const [key,val] of params.entries()){
+            //     bodyObj[key] = val;
+            // } //alternative way to convert params to object
+             const bodyObj = Object.fromEntries(params.entries());
+            console.log(bodyObj);
+            fs.writeFileSync('details.txt',JSON.stringify(bodyObj,),'utf-8');
+            console.log('File written successfully');
+        })
+
         fs.writeFileSync('details.txt','Saurabh');
         res.statusCode = 302;
         res.setHeader('Location', '/details');
@@ -60,7 +79,4 @@ const server = http.createServer((req,res)=>{
     res.end();  
 }
 )
-
-server.listen(PORT,()=>{
-console.log(`Server is running on port http://localhost:${PORT}`);
-});
+module.exports = userDetails;
